@@ -1,6 +1,10 @@
 package com.maryana.cursomc.resources;
 
 import com.maryana.cursomc.domain.Categoria;
+import com.maryana.cursomc.services.CategoriaService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,17 +16,15 @@ import java.util.List;
 @RequestMapping(value = "/categorias")
 public class CategoriaResource {
 
-    @RequestMapping(method = RequestMethod.GET) //isso eh um verbo do http, os verbos sao (get, post, delete, update)
-    public List<Categoria> listar() {
+    @Autowired
+    private CategoriaService service;
 
-        Categoria cat1 = new Categoria(1, "Informatica");
-        Categoria cat2 = new Categoria(2, "Escritorio");
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)//isso eh um verbo do http, os verbos sao (get, post, delete, update)
+    public ResponseEntity<?> find(@PathVariable Integer id) {
+        //responseEntity ja te da as respostas do http de sucesso ou nao
 
-        List<Categoria> lista = new ArrayList<>();
+        Categoria obj = service.buscar(id);
 
-        lista.add(cat1);
-        lista.add(cat2);
-
-        return lista;
+        return ResponseEntity.ok().body(obj); //retornando a resposta de sucesso com o objeto no corpo
     }
 }

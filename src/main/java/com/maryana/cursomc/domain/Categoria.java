@@ -1,13 +1,20 @@
 package com.maryana.cursomc.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
+@Entity
 public class Categoria implements Serializable {
     //Serializable serve pra gravar o objeto em arquivo e trafegar em rede
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //geracao automatica do id
     private Integer id;
     private String nome;
 

@@ -4,10 +4,10 @@ import com.maryana.cursomc.domain.Categoria;
 import com.maryana.cursomc.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 
 @RestController
@@ -24,5 +24,16 @@ public class CategoriaResource {
         Categoria obj = service.buscar(id);
 
         return ResponseEntity.ok().body(obj); //retornando a resposta de sucesso com o objeto no corpo
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> insert(@RequestBody Categoria obj) { //requestBody é pra transformar o json em objeto java
+        obj = service.insert(obj);
+
+        //depois de salval o objeto, redirecionamos para a uri corrente com o id do novo objeto que acabou de criar
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                .path("/{id}").buildAndExpand(obj.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 }

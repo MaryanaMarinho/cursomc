@@ -17,17 +17,19 @@ public class CategoriaResource {
     @Autowired
     private CategoriaService service;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)//isso eh um verbo do http, os verbos sao (get, post, delete, update)
-    public ResponseEntity<?> find(@PathVariable Integer id) {
+    //isso eh um verbo do http, os verbos sao (get, post, delete, update)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Categoria> find(@PathVariable Integer id) {
         //responseEntity ja te da as respostas do http de sucesso ou nao
 
-        Categoria obj = service.buscar(id);
+        Categoria obj = service.find(id);
 
         return ResponseEntity.ok().body(obj); //retornando a resposta de sucesso com o objeto no corpo
     }
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Void> insert(@RequestBody Categoria obj) { //requestBody é pra transformar o json em objeto java
+
         obj = service.insert(obj);
 
         //depois de salval o objeto, redirecionamos para a uri corrente com o id do novo objeto que acabou de criar
@@ -35,5 +37,14 @@ public class CategoriaResource {
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+
+        obj.setId(id);
+        obj = service.update(obj);
+
+        return ResponseEntity.noContent().build();
     }
 }

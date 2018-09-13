@@ -1,6 +1,7 @@
 package com.maryana.cursomc.services;
 
 import com.maryana.cursomc.domain.Categoria;
+import com.maryana.cursomc.dto.CategoriaDTO;
 import com.maryana.cursomc.repositories.CategoriaRepository;
 import com.maryana.cursomc.services.exceptions.DataIntegrityException;
 import com.maryana.cursomc.services.exceptions.ObjectNotFoundException;
@@ -70,5 +71,10 @@ public class CategoriaService {
         PageRequest pageRequest = PageRequest.of(page,linesPerPage, Sort.Direction.valueOf(direction), orderBy);
 
         return repo.findAll(pageRequest);
+    }
+
+    //instacia uma categoria apartir de um dto
+    public Categoria fromDTO(CategoriaDTO objDto) {
+        return new Categoria(objDto.getId(), objDto.getNome());
     }
 }

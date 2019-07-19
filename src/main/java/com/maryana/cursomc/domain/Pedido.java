@@ -21,7 +21,8 @@ public class Pedido implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date instante;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")//O cascade é necessario pra nao da erro de entidade transiente
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
+//O cascade é necessario pra nao da erro de entidade transiente
     private Pagamento pagamento;
 
     @ManyToOne
@@ -44,6 +45,15 @@ public class Pedido implements Serializable {
         this.pagamento = pagamento;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
+    }
+
+    public double getValorTotal() {
+        double soma = 0;
+        for (ItemPedido ip : itens) {
+            soma = soma + ip.getSubTotal();
+        }
+
+        return soma;
     }
 
     public Integer getId() {
